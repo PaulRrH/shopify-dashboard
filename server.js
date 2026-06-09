@@ -7,17 +7,15 @@ const PORT = process.env.PORT || 8080;
 const SHOPIFY_TOKEN = process.env.SHOPIFY_TOKEN;
 const SHOPIFY_STORE = process.env.SHOPIFY_STORE || 'devmarket-ixlaknow.myshopify.com';
 
-// Proxy all /shopify-admin/* → Shopify Admin API with token injected server-side
+// Proxy /shopify-admin/* → Shopify Admin API with token injected server-side
 app.use('/shopify-admin', createProxyMiddleware({
   target: `https://${SHOPIFY_STORE}`,
   changeOrigin: true,
   pathRewrite: { '^/shopify-admin': '' },
-  on: {
-    proxyReq: (proxyReq) => {
-      if (SHOPIFY_TOKEN) {
-        proxyReq.setHeader('X-Shopify-Access-Token', SHOPIFY_TOKEN);
-      }
-    },
+  onProxyReq: (proxyReq) => {
+    if (SHOPIFY_TOKEN) {
+      proxyReq.setHeader('X-Shopify-Access-Token', SHOPIFY_TOKEN);
+    }
   },
 }));
 
@@ -25,7 +23,7 @@ app.use('/shopify-admin', createProxyMiddleware({
 const distDir = path.join(__dirname, 'dist', 'shopify-dashboard', 'browser');
 app.use(express.static(distDir));
 
-// SPA fallback — all unknown routes → index.html
+// SPA fallback
 app.get('*', (_req, res) => {
   res.sendFile(path.join(distDir, 'index.html'));
 });
