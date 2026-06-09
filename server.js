@@ -23,8 +23,8 @@ app.use('/shopify-admin', createProxyMiddleware({
 const distDir = path.join(__dirname, 'dist', 'shopify-dashboard', 'browser');
 app.use(express.static(distDir));
 
-// SPA fallback
-app.get('*', (_req, res) => {
+// SPA fallback — Express 5 requires explicit wildcard param
+app.use((_req, res) => {
   res.sendFile(path.join(distDir, 'index.html'));
 });
 
