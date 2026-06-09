@@ -8,5 +8,10 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('shopify-dashboard');
+  showAnnouncement = signal(true);
+  cartCount = signal(0);
+
+  dismissAnnouncement() {
+    this.showAnnouncement.set(false);
+  }
 }

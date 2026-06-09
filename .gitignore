@@ -42,3 +42,9 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# Shopify token — never commit
+proxy.conf.json
+
+# Claude session data
+.claude/
